@@ -1,0 +1,90 @@
+# General
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+*.log
+*.tmp
+*.temp
+*.bak
+*~
+
+# Environment files
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+*.pyo
+*.pyc
+.Python
+env/
+venv/
+.venv/
+pip-wheel-metadata/
+pip-log.txt
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+coverage.xml
+.coverage
+htmlcov/
+
+# Byte-compiled / C extensions
+*.so
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tgz
+
+# JavaScript sourcemaps
+*.map
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# Visual Studio / .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.ncrunch*
+*.cache
+*.ilk
+*.meta
+*.pdb
+*.dll
+*.exe
+
+# Rider
+.idea/
+*.sublime-workspace
+
+# Tools / generated outputs
+Tools/extracted/
+
+# Test / coverage
+.pytest_cache/
+coverage/
+
+# Misc
+.history/
+.vs/
