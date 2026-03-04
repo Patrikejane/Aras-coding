@@ -1,0 +1,17 @@
+<Item type="Method" action="add">
+  <name>HRDEECMthCalculateTotalCost</name>
+  <method_type>Client</method_type>
+  <execution_allowed_to>All</execution_allowed_to>
+  <language>JavaScript</language>
+  <method_code><![CDATA[
+    var item = this;
+
+    var qty = parseFloat(item.getProperty("quantity", "0"));
+    var unitCost = parseFloat(item.getProperty("unit_cost", "0"));
+
+    var total = qty * unitCost;
+
+    item.setProperty("total_cost", total.toString());
+    aras.AlertSuccess("Total Cost Calculated: " + total);
+  ]]></method_code>
+</Item>

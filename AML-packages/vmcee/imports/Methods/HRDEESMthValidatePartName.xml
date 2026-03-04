@@ -1,0 +1,17 @@
+<Item type="Method" action="add">
+  <name>HRDEECMthShowPartInfo</name>
+  <method_type>Client</method_type>
+  <execution_allowed_to>All</execution_allowed_to>
+  <language>JavaScript</language>
+  <method_code><![CDATA[
+// Method Name: Show_Part_Info
+// Method Type: Client
+// Language: JavaScript
+
+var partItem = this;
+var partNumber = partItem.getProperty("item_number", "");
+var partName = partItem.getProperty("name", "");
+
+aras.AlertSuccess("Part: " + partNumber + " - " + partName);
+  ]]></method_code>
+</Item>

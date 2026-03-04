@@ -1,0 +1,57 @@
+# Rules configuration for XMLBestPracticesAnalyzer
+# This YAML file defines the checks performed by the analyzer and their severities.
+
+naming_conventions:
+  prefix:
+    value: "HRDEE"
+    severity: "warning"
+    message: "Method name does not follow HRDEE prefix convention"
+  indicator:
+    patterns: ["SMth", "CMth"]
+    severity: "warning"
+    message: "Method name lacks SMth/CMth indicator"
+  mth_presence:
+    pattern: "Mth"
+    severity: "warning"
+    message: "Method name missing 'Mth' prefix"
+  pascal_after_mth:
+    severity: "info"
+    message: "Method name part after 'Mth' should be PascalCase"
+
+configuration_completeness:
+  method_type:
+    required: true
+    valid_values: ["Server", "Client"]
+    severity_missing: "error"
+    severity_invalid: "warning"
+  execution_allowed_to:
+    required: true
+    valid_values: ["All", "Authenticated", "Admin", "Owner", "System", "None"]
+    severity_missing: "error"
+    severity_invalid: "warning"
+  language:
+    required: true
+    valid_values: ["C#", "JavaScript"]
+    severity_missing: "error"
+    severity_invalid: "warning"
+  method_code:
+    required: true
+    min_length: 10
+    severity_missing: "error"
+    severity_short: "warning"
+
+aras_best_practices:
+  getInnovator:
+    language: "C#"
+    method_type: "Server"
+    severity: "info"
+    message: "Server method should typically use getInnovator()"
+  return_statement:
+    languages: ["C#"]
+    severity: "warning"
+    message: "Method should have a return statement"
+  must_return_item:
+    languages: ["C#"]
+    method_type: "Server"
+    severity: "error"
+    message: "Server methods must return an Item object on every execution path"

@@ -1,0 +1,51 @@
+{
+  "extraction_date": "2026-03-05T00:00:40.001607",
+  "total_methods": 4,
+  "methods": [
+    {
+      "method_name": "HRDEESMthValidatePartName",
+      "method_type": "Server",
+      "language": "C#",
+      "output_file": "d:\\AI LLM\\ARAS CODING\\Tools\\extracted\\cs\\HRDEESMthValidatePartName.cs",
+      "source_file": "d:\\AI LLM\\ARAS CODING\\AML-packages\\vmcee\\imports\\Methods\\HRDEECMthShowPartInfo.xml",
+      "code_length": 223,
+      "extraction_status": "success"
+    },
+    {
+      "method_name": "HRDEECMthShowPartInfo",
+      "method_type": "Client",
+      "language": "JavaScript",
+      "output_file": "d:\\AI LLM\\ARAS CODING\\Tools\\extracted\\js\\HRDEECMthShowPartInfo.js",
+      "source_file": "d:\\AI LLM\\ARAS CODING\\AML-packages\\vmcee\\imports\\Methods\\HRDEESMthValidatePartName.xml",
+      "code_length": 268,
+      "extraction_status": "success"
+    },
+    {
+      "method_name": "HRDEECMthCalculateTotalCost",
+      "method_type": "Client",
+      "language": "JavaScript",
+      "output_file": "d:\\AI LLM\\ARAS CODING\\Tools\\extracted\\js\\HRDEECMthCalculateTotalCost.js",
+      "source_file": "d:\\AI LLM\\ARAS CODING\\AML-packages\\vmcee2\\imports\\Methods\\HRDEECMthCalculateTotalCost.xml",
+      "code_length": 291,
+      "extraction_status": "success"
+    },
+    {
+      "method_name": "HRDEESMthAutoGenerateCustomPartNumber",
+      "method_type": "Server",
+      "language": "C#",
+      "output_file": "d:\\AI LLM\\ARAS CODING\\Tools\\extracted\\cs\\HRDEESMthAutoGenerateCustomPartNumber.cs",
+      "source_file": "d:\\AI LLM\\ARAS CODING\\AML-packages\\vmcee2\\imports\\Methods\\HRDEESMthAutoGenerateCustomPartNumber.xml",
+      "code_length": 281,
+      "extraction_status": "success"
+    }
+  ],
+  "summary": {
+    "by_language": {
+      "C#": 2,
+      "JavaScript": 2
+    },
+    "by_status": {
+      "success": 4
+    }
+  }
+}

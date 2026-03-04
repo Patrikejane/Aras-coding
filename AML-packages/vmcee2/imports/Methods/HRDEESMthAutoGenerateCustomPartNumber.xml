@@ -1,0 +1,18 @@
+<Item type="Method" action="add">
+  <name>HRDEESMthAutoGenerateCustomPartNumber</name>
+  <method_type>Server</method_type>
+  <execution_allowed_to>All</execution_allowed_to>
+  <language>C#</language>
+  <method_code><![CDATA[
+    Innovator inn = this.getInnovator();
+    Item part = this;
+
+    // Generate timestamp-based number
+    string timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+    string newPartNumber = "PRT-" + timestamp;
+
+    part.setProperty("item_number", newPartNumber);
+
+    return part;
+  ]]></method_code>
+</Item>

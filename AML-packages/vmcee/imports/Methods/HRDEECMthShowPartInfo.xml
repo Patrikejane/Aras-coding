@@ -1,0 +1,18 @@
+<Item type="Method" action="add">
+  <name>HRDEESMthValidatePartName</name>
+  <method_type>Server</method_type>
+  <execution_allowed_to>All</execution_allowed_to>
+  <language>C#</language>
+  <method_code><![CDATA[
+    Innovator inn = this.getInnovator();
+    Item part = this;
+
+    string partName = part.getProperty("name", "");
+
+    if (string.IsNullOrEmpty(partName))
+    {
+        return inn.newError("Part Name cannot be empty.");
+    }
+
+  ]]></method_code>
+</Item>
