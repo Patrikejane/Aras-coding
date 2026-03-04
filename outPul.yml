@@ -1,0 +1,62 @@
+# azure-pipelines.yml
+trigger: none
+pr:
+  branches:
+    include: [ main, develop ]
+
+steps:
+  - task: PythonScript@0
+    displayName: "Extract Aras Method Code"
+    inputs:
+      scriptPath: Tools/CodeExtractor.py
+
+  - task: PythonScript@0
+    displayName: "LLM Static Analysis"
+    inputs:
+      scriptPath: Tools/analyzer_agent.py
+    env:
+      LLM_API_KEY: $(LLM_API_KEY)      # stored in ADO secret variables
+
+  - task: PythonScript@0
+    displayName: "Post Results to PR"
+    inputs:
+      scriptPath: Tools/post_to_pr.py  # ← new script
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      PR_ID: $(System.PullRequest.PullRequestId)
+```
+
+The `post_to_pr.py` script reads `analysis_report.json` and calls the ADO REST API:
+
+- **AUTO_FAIL issues** → posted as inline PR thread comments, status = `active`, PR vote set to **Rejected**
+- **NEEDS_REVIEW issues** → posted as PR comments assigned to the named reviewer (`ArasArchitect`, `SecurityTeam`), status = `active`
+- **AUTO_PASS** → single summary comment: "✅ Static analysis passed — N rules checked"
+
+This distinction between code hygiene checks (auto) and risk-relevant checks (human review) is exactly what enterprises need — static analysis strengthens PR governance without becoming a delivery bottleneck. 
+
+---
+
+## What the PR Looks Like to the Developer
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PR #47 — feat/auto-part-number                             │
+│  ● Build Failed   🤖 LLM Analysis Complete                  │
+├─────────────────────────────────────────────────────────────┤
+│  Files Changed   Overview   Comments (4)                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  HRDEESMthValidatePartName.cs                               │
+│  ├─ Line 8  🔴 AUTO_FAIL: No return on success path         │
+│  │          "Method falls through without returning Item"   │
+│  │                                                          │
+│  └─ Line 1  🟡 NEEDS_REVIEW  @ArasArchitect                 │
+│             "getInnovator() unused on success path —        │
+│              confirm if intentional"                        │
+│             [ Approve ] [ Reject ]                          │
+│                                                             │
+│  HRDEECMthCalculateTotalCost.js                             │
+│  └─ Line 4  🟡 NEEDS_REVIEW  @SecurityTeam                  │
+│             "parseFloat() result not validated for NaN      │
+│              before writing to property"                    │
+│             [ Approve ] [ Reject ]                          │
+└─────────────────────────────────────────────────────────────┘
