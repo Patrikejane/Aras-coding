@@ -1,4 +1,4 @@
-<Item type="Method" action="add">
+<AML><Item type="Method" action="add">
   <name>HRDEESMthValidatePartName</name>
   <method_type>Server</method_type>
   <execution_allowed_to>All</execution_allowed_to>
@@ -16,3 +16,4 @@
 
   ]]></method_code>
 </Item>
+</AML>

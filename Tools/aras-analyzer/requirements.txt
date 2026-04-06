@@ -1,0 +1,13 @@
+﻿# Aras Analyser — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# YAML config parsing (rules.yaml, llm_config.yaml, pipeline_config.yaml)
+PyYAML>=6.0
+
+# All other dependencies use Python stdlib only:
+# - urllib      (HTTP calls to LLM APIs and ADO REST)
+# - json        (report building and LLM response parsing)
+# - http.server (local UI server)
+# - argparse    (CLI entry point)
+# - dataclasses (Rule and Method objects)
+# - pathlib     (file path handling)

@@ -1,16 +1,7 @@
 {
-  "extraction_date": "2026-03-05T00:00:40.001607",
-  "total_methods": 4,
+  "extraction_date": "2026-03-05T21:33:30.034545",
+  "total_methods": 3,
   "methods": [
-    {
-      "method_name": "HRDEESMthValidatePartName",
-      "method_type": "Server",
-      "language": "C#",
-      "output_file": "d:\\AI LLM\\ARAS CODING\\Tools\\extracted\\cs\\HRDEESMthValidatePartName.cs",
-      "source_file": "d:\\AI LLM\\ARAS CODING\\AML-packages\\vmcee\\imports\\Methods\\HRDEECMthShowPartInfo.xml",
-      "code_length": 223,
-      "extraction_status": "success"
-    },
     {
       "method_name": "HRDEECMthShowPartInfo",
       "method_type": "Client",
@@ -41,11 +32,11 @@
   ],
   "summary": {
     "by_language": {
-      "C#": 2,
-      "JavaScript": 2
+      "JavaScript": 2,
+      "C#": 1
     },
     "by_status": {
-      "success": 4
+      "success": 3
     }
   }
 }

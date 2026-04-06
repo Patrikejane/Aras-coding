@@ -83,7 +83,7 @@ Every rule in rules.yaml gets 3 new fields:
 | routing | LLM finds violation | Result |
 |---|---|---|
 | auto_fail | yes | Issue marked AUTO_FAIL — PR blocked, no human needed |
-| needs_review | yes | Issue marked NEEDS_REVIEW — sent to reviewer_role |
+cd "/d/AI LLM/ARAS CODING/Tools/aras-analyzer" && C*/Python313/python.exe test_run.py
 | auto_pass | yes | Informational only — never blocks anything |
 | any | no | Issue marked AUTO_PASS |
 

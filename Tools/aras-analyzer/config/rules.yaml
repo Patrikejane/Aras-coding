@@ -1,0 +1,242 @@
+﻿# ============================================================
+# Aras Innovator LLM Static Analysis Ruleset
+# ============================================================
+
+naming_conventions:
+  prefix:
+    severity: "warning"
+    category: "naming"
+    routing: "auto_fail"
+    message: "Method name must start with HRDEE prefix"
+    rule_detail: "All Aras methods must begin with HRDEE to identify ownership."
+  indicator:
+    severity: "warning"
+    category: "naming"
+    routing: "auto_fail"
+    patterns: ["SMth", "CMth"]
+    message: "Method name must contain SMth (Server) or CMth (Client) indicator"
+    rule_detail: "Indicator makes the method type visible in the name."
+  mth_presence:
+    severity: "warning"
+    category: "naming"
+    routing: "auto_fail"
+    pattern: "Mth"
+    message: "Method name must contain Mth segment"
+    rule_detail: "Mth separates the project prefix from the functional description."
+  pascal_after_mth:
+    severity: "info"
+    category: "naming"
+    routing: "auto_fail"
+    message: "Functional part after Mth must be PascalCase"
+    rule_detail: "e.g. HRDEESMthValidatePartName — ValidatePartName is PascalCase."
+
+configuration_completeness:
+  method_type:
+    required: true
+    valid_values: ["Server", "Client"]
+    severity_missing: "error"
+    severity_invalid: "warning"
+    category: "config"
+    routing: "auto_fail"
+    message: "method_type is required and must be Server or Client"
+  execution_allowed_to:
+    required: true
+    valid_values: ["All", "Authenticated", "Admin", "Owner", "System", "None"]
+    severity_missing: "error"
+    severity_invalid: "warning"
+    category: "config"
+    routing: "auto_fail"
+    message: "execution_allowed_to is required with a valid access level"
+  language:
+    required: true
+    valid_values: ["C#", "JavaScript"]
+    severity_missing: "error"
+    severity_invalid: "warning"
+    category: "config"
+    routing: "auto_fail"
+    message: "language is required and must be C# or JavaScript"
+  method_code:
+    required: true
+    min_length: 10
+    severity_missing: "error"
+    severity_short: "warning"
+    category: "config"
+    routing: "auto_fail"
+    message: "method_code is required and must contain meaningful code"
+
+aras_best_practices:
+  getInnovator_required:
+    severity: "warning"
+    category: "aras_specific"
+    routing: "needs_review"
+    reviewer_role: "ArasArchitect"
+    applies_to:
+      language: "C#"
+      method_type: "Server"
+    message: "Server C# methods should call getInnovator() to obtain the Innovator context"
+    rule_detail: >
+      getInnovator() provides the Aras server context. Without it, methods cannot create
+      Items or run AML queries. Reviewer should confirm if omission is intentional.
+  must_return_item:
+    severity: "error"
+    category: "aras_specific"
+    routing: "needs_review"
+    reviewer_role: "ArasArchitect"
+    applies_to:
+      language: "C#"
+      method_type: "Server"
+    message: "Server methods must return an Item object on every execution path"
+    rule_detail: >
+      Aras server methods that do not return an Item cause a runtime error. Every code
+      path including early returns must return a valid Item. Silent fall-through returns
+      null and will crash the caller.
+  error_return_pattern:
+    severity: "warning"
+    category: "aras_specific"
+    routing: "needs_review"
+    reviewer_role: "ArasArchitect"
+    applies_to:
+      language: "C#"
+      method_type: "Server"
+    message: "Errors should be returned via inn.newError() not thrown as exceptions"
+    rule_detail: >
+      Unhandled C# exceptions surface as generic server errors. Use inn.newError() to
+      return structured errors the client can handle gracefully.
+  client_alert_pattern:
+    severity: "info"
+    category: "aras_specific"
+    routing: "needs_review"
+    reviewer_role: "ArasArchitect"
+    applies_to:
+      language: "JavaScript"
+      method_type: "Client"
+    message: "Prefer aras.AlertSuccess / aras.AlertError over alert() for user feedback"
+    rule_detail: >
+      Native alert() bypasses the Aras UI framework. aras.AlertSuccess and aras.AlertError
+      are the correct Aras patterns.
+  getProperty_default_value:
+    severity: "warning"
+    category: "aras_specific"
+    routing: "needs_review"
+    reviewer_role: "ArasArchitect"
+    message: "getProperty() should always include a default value as second argument"
+    rule_detail: >
+      Without a default, getProperty() returns null if the property is missing, causing
+      NullReferenceException in C# or silent NaN in JS.
+
+security:
+  eval_usage:
+    severity: "error"
+    category: "security"
+    routing: "needs_review"
+    reviewer_role: "SecurityTeam"
+    applies_to:
+      language: "JavaScript"
+    message: "eval() must never be used — critical security risk"
+    rule_detail: >
+      eval() executes arbitrary strings as code. In Aras client methods this could allow
+      injection of malicious code via property values or URL parameters.
+  sql_string_concat:
+    severity: "error"
+    category: "security"
+    routing: "needs_review"
+    reviewer_role: "SecurityTeam"
+    message: "String concatenation in AML/SQL queries risks injection attacks"
+    rule_detail: >
+      Building AML queries by concatenating user-supplied values allows query structure
+      manipulation. Use parameterised AML patterns or inn.newItem() instead.
+  hardcoded_credentials:
+    severity: "error"
+    category: "security"
+    routing: "needs_review"
+    reviewer_role: "SecurityTeam"
+    message: "Hardcoded passwords, tokens or API keys detected"
+    rule_detail: >
+      Credentials in source code are exposed in version history permanently. Use Aras
+      vault, environment variables, or Azure Key Vault references instead.
+  unsafe_innerhtml:
+    severity: "warning"
+    category: "security"
+    routing: "needs_review"
+    reviewer_role: "SecurityTeam"
+    applies_to:
+      language: "JavaScript"
+    message: "innerHTML assignment with dynamic content risks XSS"
+    rule_detail: >
+      Setting innerHTML with values from getProperty() allows script injection. Use
+      textContent or sanitise values before rendering.
+
+general_csharp:
+  null_check_missing:
+    severity: "warning"
+    category: "general_csharp"
+    routing: "auto_fail"
+    message: "Result of getProperty() used without null or empty check"
+    rule_detail: >
+      getProperty() can return null or empty string. Always validate with
+      string.IsNullOrEmpty() or a null check before use.
+  datetime_now_usage:
+    severity: "info"
+    category: "general_csharp"
+    routing: "auto_fail"
+    message: "DateTime.Now used directly — consider DateTime.UtcNow for server code"
+    rule_detail: >
+      DateTime.Now returns local server time which varies by timezone. DateTime.UtcNow
+      is safer for timestamps stored in the database.
+  empty_catch_block:
+    severity: "error"
+    category: "general_csharp"
+    routing: "auto_fail"
+    message: "Empty catch block silently swallows exceptions"
+    rule_detail: >
+      A catch block with no body hides errors. At minimum return inn.newError(ex.Message)
+      so the caller knows something went wrong.
+  magic_string_usage:
+    severity: "info"
+    category: "general_csharp"
+    routing: "auto_fail"
+    message: "Hardcoded string literals used as property names or item types"
+    rule_detail: >
+      Magic strings like item_number scattered through code are fragile. Consider
+      constants or a shared reference class.
+
+general_javascript:
+  var_usage:
+    severity: "warning"
+    category: "general_javascript"
+    routing: "auto_fail"
+    message: "Use let or const instead of var"
+    rule_detail: >
+      var has function scope and hoisting behaviour that leads to subtle bugs. let and
+      const have block scope and make variable intent clearer.
+  nan_not_checked:
+    severity: "warning"
+    category: "general_javascript"
+    routing: "auto_fail"
+    message: "parseFloat() or parseInt() result not validated for NaN before use"
+    rule_detail: >
+      If getProperty() returns empty or non-numeric, parseFloat returns NaN. Any
+      arithmetic with NaN also produces NaN stored silently. Always check isNaN().
+  string_concat_in_ui:
+    severity: "info"
+    category: "general_javascript"
+    routing: "auto_fail"
+    message: "String concatenation for display — prefer template literals"
+    rule_detail: >
+      Template literals are easier to read and maintain than string concatenation.
+  implicit_type_coercion:
+    severity: "warning"
+    category: "general_javascript"
+    routing: "auto_fail"
+    message: "Loose equality (==) used — prefer strict equality (===)"
+    rule_detail: >
+      == performs type coercion producing unexpected results. Always use === in
+      Aras client methods.
+  no_error_handling:
+    severity: "warning"
+    category: "general_javascript"
+    routing: "auto_fail"
+    message: "No try/catch or error handling present in method"
+    rule_detail: >
+      Client methods that throw uncaught exceptions display a generic Aras error dialog.
+      Wrap logic in try/catch and use aras.AlertError() to communicate failures.

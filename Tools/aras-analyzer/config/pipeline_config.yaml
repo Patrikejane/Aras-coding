@@ -1,0 +1,29 @@
+﻿# ============================================================
+# Pipeline & Reviewer Configuration
+# ============================================================
+
+ado:
+  organization: "your-org"
+  project: "your-project"
+  block_merge_on_auto_fail: true
+  block_merge_on_needs_review: false
+  token_env: "SYSTEM_ACCESSTOKEN"
+
+reviewers:
+  ArasArchitect:
+    display_name: "Aras Architect"
+    ado_identity: "firstname.lastname@company.com"
+  SecurityTeam:
+    display_name: "Security Team"
+    ado_identity: "security@company.com"
+
+reports:
+  output_dir: "reports"
+  archive_dir: "reports/archive"
+  filename: "analysis_report.json"
+  include_passed_rules: false
+  timestamp_format: "%Y%m%d-%H%M%S"
+
+ui:
+  port: 8080
+  auto_open_browser: true

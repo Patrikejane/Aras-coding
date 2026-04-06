@@ -1,0 +1,37 @@
+﻿# ============================================================
+# LLM Provider Configuration
+# ============================================================
+# Change 'provider' to switch the LLM backend.
+# Valid values: mock | claude | openai | azure_openai
+#
+# 'mock' requires no API key — use for local dev and testing.
+# All other providers read the API key from the environment
+# variable named in 'api_key_env'. Never hardcode keys here.
+# ============================================================
+
+provider: "mock"                      # START HERE — no API key needed
+
+model: "claude-sonnet-4-20250514"
+temperature: 0.1
+max_tokens: 2000
+
+api_key_env: "LLM_API_KEY"
+
+claude:
+  model: "claude-sonnet-4-20250514"
+  base_url: "https://api.anthropic.com"
+
+openai:
+  model: "gpt-4o"
+  base_url: "https://api.openai.com/v1"
+
+azure_openai:
+  model: "gpt-4o"
+  deployment_name: "your-deployment-name"
+  api_version: "2024-02-01"
+  base_url_env: "AZURE_OPENAI_ENDPOINT"
+
+analysis:
+  mode: "per_rule"
+  confidence_threshold: "medium"
+  include_fix_suggestions: true
